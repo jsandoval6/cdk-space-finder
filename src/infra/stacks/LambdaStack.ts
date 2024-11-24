@@ -4,6 +4,8 @@ import { Function as LambdaFunction, Runtime, Code } from "aws-cdk-lib/aws-lambd
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { join } from "path";
 import { ITable } from "aws-cdk-lib/aws-dynamodb";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 interface LambdaStackProps extends StackProps {
     spacesTable: ITable
@@ -11,20 +13,38 @@ interface LambdaStackProps extends StackProps {
 
 export class LambdaStack extends Stack {
     
-    public readonly helloLambdaIntegration: LambdaIntegration;
+    public readonly spacesLambdaIntegration: LambdaIntegration;
     
     constructor(scope: Construct, id: string, props: LambdaStackProps) {
         super( scope, id, props );
         
-       const helloLambda =  new LambdaFunction( this, "HelloLambda", {
+    //    const helloLambda =  new LambdaFunction( this, "HelloLambda", {
+    //         runtime: Runtime.NODEJS_20_X,
+    //         handler: "hello.main",
+    //         code: Code.fromAsset( join( __dirname, '..', '..', 'services' ) ),
+    //         environment: {
+    //             TABLE_NAME: props.spacesTable.tableName
+    //         }
+        //    } );
+        
+        const spacesLambda = new NodejsFunction( this, "SpacesLamba", {
             runtime: Runtime.NODEJS_20_X,
-            handler: "Hello.main",
-            code: Code.fromAsset( join( __dirname, '..', '..', 'services' ) ),
+            handler: "handler",
+            entry: join(__dirname, '..', '..', 'services', 'spaces', 'handler.ts'),
             environment: {
                 TABLE_NAME: props.spacesTable.tableName
-            }
-       } );
+            },
+        } )
         
-        this.helloLambdaIntegration = new LambdaIntegration( helloLambda );
+        // helloLambda.addToRolePolicy( new PolicyStatement( {
+        //     effect: Effect.ALLOW,
+        //     actions: [
+        //         's3:ListAllMyBuckets',
+        //         's3:ListBucket'
+        //     ],
+        //     resources: ['*']
+        // }))
+        
+        this.spacesLambdaIntegration = new LambdaIntegration( spacesLambda );
     }  
 }
