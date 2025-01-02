@@ -8,7 +8,7 @@ export async function postSpacesWithDoc( event: APIGatewayProxyEvent, ddbClient:
     const ddbDocClient = DynamoDBDocumentClient.from( ddbClient)
 
     const randomId = v4();
-    const item = JSON.parse( event.body );
+    const item = JSON.parse( event.body! );
     item.id = randomId;
     console.log(item)
 
