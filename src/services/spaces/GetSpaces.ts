@@ -10,7 +10,7 @@ export async function getSpaces ( event: APIGatewayProxyEvent, ddbClient: Dynamo
             const getItemResponse = await ddbClient.send( new GetItemCommand( {
                 TableName: process.env.TABLE_NAME,
                 Key: {
-                    "id": { S: spaceId },
+                    "id": { S: spaceId! },
                     "DataStack": { S: 'spaceTable' }
                 }
             } ) )

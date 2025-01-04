@@ -45,5 +45,6 @@ export class MonitorStack extends Stack {
         const topicAction = new SnsAction( alarmTopic );
 
         spacesApi4xxAlarms.addAlarmAction( topicAction );
+    
     }
 }
