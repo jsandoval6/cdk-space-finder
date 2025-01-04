@@ -6,6 +6,10 @@
       "es2020",
       "dom"
     ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "declaration": true,
     "strict": true,
     "noImplicitAny": true,
@@ -22,7 +26,8 @@
     "strictPropertyInitialization": false,
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",
