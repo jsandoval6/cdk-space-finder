@@ -1,5 +1,5 @@
 import { JSONError } from "@/services/shared/DataValidator"
-import { APIGatewayProxyEvent } from "aws-lambda"
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda"
 
 export function parseJSON ( args: any ) {
     try {
@@ -15,4 +15,12 @@ export function hasAdminGroup ( event: APIGatewayProxyEvent ): boolean {
         return ( groups as string ).includes( 'admins' );
     }
     return false;
+}
+
+export function addCORSHeader ( arg: APIGatewayProxyResult ){ 
+    if ( !arg.headers ) {
+        arg.headers = {};
+    }
+    arg.headers[ 'Access-Control-Allow-Origin' ] = '*';
+     arg.headers[ 'Access-Control-Allow-Methods' ] = '*';
 }
